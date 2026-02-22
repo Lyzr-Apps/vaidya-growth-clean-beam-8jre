@@ -93,9 +93,18 @@ interface OutreachChannel {
   word_count?: number
 }
 
+interface Lead {
+  name: string
+  professional_type: string
+  city: string
+  contact_info: string
+  verified: boolean
+}
+
 interface OutreachResult {
   partner_type: string
   city: string
+  leads: Lead[]
   channels: OutreachChannel[]
   personalization_notes: string
 }
@@ -137,6 +146,12 @@ const SAMPLE_CHAT_MESSAGES: ChatMessage[] = [
 const SAMPLE_OUTREACH_RESULT: OutreachResult = {
   partner_type: 'Yoga Teacher',
   city: 'Delhi',
+  leads: [
+    { name: 'Yoga House Delhi', professional_type: 'Yoga Teacher', city: 'Delhi', contact_info: '@yogahousedelhi on Instagram | Hauz Khas Village', verified: true },
+    { name: 'Priya Yoga Studio', professional_type: 'Yoga Teacher', city: 'Delhi', contact_info: '@priyayogastudio | Lajpat Nagar', verified: true },
+    { name: 'ArtOfLiving Yoga Center', professional_type: 'Yoga Teacher', city: 'Delhi', contact_info: 'South Extension, Part 2', verified: false },
+    { name: 'Moksha Yoga Shala', professional_type: 'Yoga Teacher', city: 'Delhi', contact_info: '@mokshayogashala | Connaught Place', verified: true },
+  ],
   channels: [
     {
       channel_name: 'WhatsApp',
@@ -343,7 +358,6 @@ export default function Page() {
   const [growthForm, setGrowthForm] = useState({
     partnerType: '',
     city: '',
-    customCity: '',
     channels: [] as string[],
     partnerName: '',
   })
@@ -513,10 +527,9 @@ export default function Page() {
 
   // ---- Growth Engine handlers ----
   const handleGenerateOutreach = useCallback(async () => {
-    const { partnerType, city, customCity, channels, partnerName } = growthForm
-    const selectedCity = city === 'custom' ? customCity : city
+    const { partnerType, city, channels, partnerName } = growthForm
 
-    if (!partnerType || !selectedCity || channels.length === 0) {
+    if (!partnerType || !city.trim() || channels.length === 0) {
       setOutreachError('Please select a partner type, city, and at least one channel.')
       return
     }
@@ -526,7 +539,7 @@ export default function Page() {
     setOutreachLoading(true)
     setActiveAgentId(OUTREACH_GENERATOR_ID)
 
-    const prompt = `Generate outreach messages for a ${partnerType} in ${selectedCity}. Channels: ${channels.join(', ')}.${partnerName ? ' Partner name: ' + partnerName : ''}`
+    const prompt = `Find real ${partnerType}s in ${city.trim()} via web search. Provide a lead table with their names, business names, Instagram handles, and contact info. Then generate outreach messages for channels: ${channels.join(', ')}.${partnerName ? ' Personalize for partner name: ' + partnerName : ''} Include SVEDAN Brand Partner details (20% commission, free samples, exclusive territory). Contact: WhatsApp +918168239200.`
 
     try {
       const result = await callAIAgent(prompt, OUTREACH_GENERATOR_ID)
@@ -537,23 +550,26 @@ export default function Page() {
 
         if (data && typeof data === 'object' && !Array.isArray(data)) {
           const resChannels = Array.isArray(data?.channels) ? data.channels : []
+          const resLeads = Array.isArray(data?.leads) ? data.leads : []
           outreach = {
             partner_type: data?.partner_type || partnerType,
-            city: data?.city || selectedCity,
+            city: data?.city || city.trim(),
+            leads: resLeads,
             channels: resChannels,
             personalization_notes: data?.personalization_notes || '',
           }
         }
 
-        if (outreach && outreach.channels.length > 0) {
+        if (outreach && (outreach.channels.length > 0 || outreach.leads.length > 0)) {
           setOutreachResult(outreach)
-          addActivity('outreach', `Generated outreach for ${partnerType} in ${selectedCity}`)
+          addActivity('outreach', `Found ${outreach.leads.length} leads and generated outreach for ${partnerType} in ${city.trim()}`)
         } else {
           const fallbackText = result?.response?.message || extractText(result.response) || ''
           if (fallbackText) {
             setOutreachResult({
               partner_type: partnerType,
-              city: selectedCity,
+              city: city.trim(),
+              leads: [],
               channels: channels.map(ch => ({
                 channel_name: ch,
                 message_body: fallbackText,
@@ -561,7 +577,7 @@ export default function Page() {
               })),
               personalization_notes: '',
             })
-            addActivity('outreach', `Generated outreach for ${partnerType} in ${selectedCity}`)
+            addActivity('outreach', `Generated outreach for ${partnerType} in ${city.trim()}`)
           } else {
             setOutreachError('Could not generate outreach messages. Please try again.')
           }
@@ -883,7 +899,7 @@ export default function Page() {
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold font-serif">Generate Outreach</h3>
-                          <p className="text-xs text-muted-foreground font-sans mt-0.5">Create personalized SVEDAN Brand Partner outreach across channels</p>
+                          <p className="text-xs text-muted-foreground font-sans mt-0.5">Find real leads via web search and generate SVEDAN Brand Partner outreach</p>
                         </div>
                         <FiChevronRight size={20} className="text-muted-foreground group-hover:text-primary transition-colors" />
                       </CardContent>
@@ -1011,7 +1027,7 @@ export default function Page() {
                                     <img src={PRODUCT_IMAGE_2} alt="SVEDAN Pain Amrut Oil" className="h-24 object-contain rounded-lg shadow-md" />
                                   </div>
                                   <div className="flex flex-wrap gap-2 justify-center">
-                                    {['Meri kamar mein dard hai', 'Ghutno mein bahut dard hota hai', 'Neck pain se pareshaan hoon', 'Joint pain ka Ayurvedic ilaaj chahiye'].map(q => (
+                                    {['Meri kamar mein dard hai', 'Ghutno mein bahut dard hota hai', 'Neck pain se pareshaan hoon', 'Main ek Yoga Teacher hoon'].map(q => (
                                       <Button
                                         key={q}
                                         variant="outline"
@@ -1126,7 +1142,7 @@ export default function Page() {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-2xl font-bold font-serif">Growth Engine</h2>
-                    <p className="text-sm text-muted-foreground font-sans mt-1">Generate personalized SVEDAN Brand Partner outreach for Yoga Teachers, Gym Trainers, and Physiotherapists</p>
+                    <p className="text-sm text-muted-foreground font-sans mt-1">Find real leads via web search and generate personalized SVEDAN Brand Partner outreach for any city in India</p>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -1134,7 +1150,7 @@ export default function Page() {
                     <Card className="lg:col-span-2">
                       <CardHeader>
                         <CardTitle className="text-base font-serif">Outreach Setup</CardTitle>
-                        <CardDescription className="font-sans">Configure SVEDAN Brand Partner outreach parameters</CardDescription>
+                        <CardDescription className="font-sans">Search any Indian city for real leads and generate outreach</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         {/* Partner Type */}
@@ -1158,28 +1174,32 @@ export default function Page() {
                         {/* City */}
                         <div className="space-y-2">
                           <Label className="font-sans text-xs uppercase tracking-wider">City *</Label>
-                          <Select
+                          <Input
+                            placeholder="Type any Indian city (e.g. Karnal, Delhi, Mumbai...)"
                             value={growthForm.city}
-                            onValueChange={(val) => setGrowthForm(prev => ({ ...prev, city: val }))}
-                          >
-                            <SelectTrigger className="font-sans">
-                              <SelectValue placeholder="Select city" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {CITIES.map(c => (
-                                <SelectItem key={c} value={c} className="font-sans">{c}</SelectItem>
-                              ))}
-                              <SelectItem value="custom" className="font-sans">Other (Custom)</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          {growthForm.city === 'custom' && (
-                            <Input
-                              placeholder="Enter city name"
-                              value={growthForm.customCity}
-                              onChange={(e) => setGrowthForm(prev => ({ ...prev, customCity: e.target.value }))}
-                              className="font-sans mt-2"
-                            />
-                          )}
+                            onChange={(e) => setGrowthForm(prev => ({ ...prev, city: e.target.value }))}
+                            className="font-sans"
+                          />
+                          <div className="flex flex-wrap gap-1.5">
+                            {CITIES.map(c => (
+                              <button
+                                key={c}
+                                type="button"
+                                onClick={() => setGrowthForm(prev => ({ ...prev, city: c }))}
+                                className={`px-2 py-0.5 rounded text-[10px] font-sans transition-colors border ${growthForm.city === c ? 'bg-primary text-primary-foreground border-primary' : 'bg-card text-muted-foreground border-border hover:bg-secondary'}`}
+                              >
+                                {c}
+                              </button>
+                            ))}
+                            <button
+                              key="Karnal"
+                              type="button"
+                              onClick={() => setGrowthForm(prev => ({ ...prev, city: 'Karnal' }))}
+                              className={`px-2 py-0.5 rounded text-[10px] font-sans transition-colors border ${growthForm.city === 'Karnal' ? 'bg-primary text-primary-foreground border-primary' : 'bg-card text-muted-foreground border-border hover:bg-secondary'}`}
+                            >
+                              Karnal
+                            </button>
+                          </div>
                         </div>
 
                         {/* Channels */}
@@ -1247,11 +1267,22 @@ export default function Page() {
                     <div className="lg:col-span-3">
                       {outreachLoading ? (
                         <Card>
-                          <CardContent className="p-6 space-y-4">
-                            <Skeleton className="h-8 w-48" />
-                            <Skeleton className="h-4 w-64" />
-                            <Skeleton className="h-32 w-full" />
-                            <Skeleton className="h-32 w-full" />
+                          <CardContent className="p-6 space-y-6">
+                            <div className="space-y-2">
+                              <Skeleton className="h-5 w-32" />
+                              <Skeleton className="h-3 w-56" />
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-xs font-sans text-muted-foreground animate-pulse">Searching the web for leads...</p>
+                              <Skeleton className="h-8 w-full" />
+                              <Skeleton className="h-8 w-full" />
+                              <Skeleton className="h-8 w-full" />
+                              <Skeleton className="h-8 w-full" />
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-xs font-sans text-muted-foreground animate-pulse">Generating personalized messages...</p>
+                              <Skeleton className="h-32 w-full" />
+                            </div>
                           </CardContent>
                         </Card>
                       ) : displayOutreach ? (
@@ -1272,7 +1303,92 @@ export default function Page() {
                               )}
                             </div>
                           </CardHeader>
-                          <CardContent>
+                          <CardContent className="space-y-6">
+                            {/* Leads Table */}
+                            {Array.isArray(displayOutreach.leads) && displayOutreach.leads.length > 0 && (
+                              <div>
+                                <div className="flex items-center justify-between mb-3">
+                                  <div>
+                                    <h4 className="text-sm font-semibold font-serif">Leads Found</h4>
+                                    <p className="text-xs text-muted-foreground font-sans">{displayOutreach.leads.length} professionals discovered via web search</p>
+                                  </div>
+                                  <Badge variant="secondary" className="font-sans text-xs">
+                                    <FiSearch size={10} className="mr-1" />
+                                    Web Search
+                                  </Badge>
+                                </div>
+                                <div className="overflow-x-auto rounded-lg border">
+                                  <Table>
+                                    <TableHeader>
+                                      <TableRow className="bg-secondary/30">
+                                        <TableHead className="font-sans text-xs uppercase tracking-wider">Name</TableHead>
+                                        <TableHead className="font-sans text-xs uppercase tracking-wider">Type</TableHead>
+                                        <TableHead className="font-sans text-xs uppercase tracking-wider">City</TableHead>
+                                        <TableHead className="font-sans text-xs uppercase tracking-wider">Contact / Social</TableHead>
+                                        <TableHead className="font-sans text-xs uppercase tracking-wider w-20">Status</TableHead>
+                                        <TableHead className="font-sans text-xs uppercase tracking-wider w-16">Save</TableHead>
+                                      </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                      {displayOutreach.leads.map((lead, idx) => (
+                                        <TableRow key={idx}>
+                                          <TableCell className="font-sans text-sm font-medium">{lead?.name || 'Unknown'}</TableCell>
+                                          <TableCell className="font-sans text-xs text-muted-foreground">{lead?.professional_type || ''}</TableCell>
+                                          <TableCell className="font-sans text-xs">
+                                            <div className="flex items-center gap-1">
+                                              <FiMapPin size={10} className="text-muted-foreground" />
+                                              {lead?.city || ''}
+                                            </div>
+                                          </TableCell>
+                                          <TableCell className="font-sans text-xs">
+                                            <span className="text-primary break-all">{lead?.contact_info || 'N/A'}</span>
+                                          </TableCell>
+                                          <TableCell>
+                                            {lead?.verified ? (
+                                              <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 font-sans text-[9px]">
+                                                <FiCheck size={8} className="mr-0.5" /> Verified
+                                              </Badge>
+                                            ) : (
+                                              <Badge variant="outline" className="font-sans text-[9px] text-muted-foreground">
+                                                Unverified
+                                              </Badge>
+                                            )}
+                                          </TableCell>
+                                          <TableCell>
+                                            <Button
+                                              variant="ghost"
+                                              size="icon"
+                                              className="h-7 w-7"
+                                              aria-label={`Save ${lead?.name} as partner`}
+                                              onClick={() => {
+                                                const newPartner: Partner = {
+                                                  id: generateId(),
+                                                  name: lead?.name || 'Unknown',
+                                                  type: lead?.professional_type || displayOutreach.partner_type,
+                                                  city: lead?.city || displayOutreach.city,
+                                                  channels: [],
+                                                  status: 'New',
+                                                  dateAdded: new Date().toISOString().split('T')[0] || '',
+                                                }
+                                                setPartners(prev => {
+                                                  if (prev.some(p => p.name === newPartner.name && p.city === newPartner.city)) return prev
+                                                  return [newPartner, ...prev]
+                                                })
+                                                addActivity('partner', `Saved lead: ${lead?.name} from ${lead?.city}`)
+                                              }}
+                                            >
+                                              <FiPlus size={14} />
+                                            </Button>
+                                          </TableCell>
+                                        </TableRow>
+                                      ))}
+                                    </TableBody>
+                                  </Table>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Channel Messages */}
                             {Array.isArray(displayOutreach.channels) && displayOutreach.channels.length > 0 ? (
                               <Tabs defaultValue={displayOutreach.channels[0]?.channel_name || 'tab-0'}>
                                 <TabsList className="w-full justify-start flex-wrap h-auto gap-1 bg-secondary/50 p-1">
@@ -1352,7 +1468,7 @@ export default function Page() {
                             <EmptyState
                               icon={<RiRocketLine size={28} />}
                               title="Ready to Generate"
-                              description="Configure your SVEDAN Brand Partner outreach parameters on the left and click Generate Outreach to create personalized messages with 20% commission offers, free samples, and exclusive territory rights."
+                              description="Enter any Indian city and partner type to search the web for real leads. The engine will find actual professionals with contact details and generate hyper-personalized outreach messages."
                             />
                           </CardContent>
                         </Card>

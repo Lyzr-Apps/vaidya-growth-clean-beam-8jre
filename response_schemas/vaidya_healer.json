@@ -6,7 +6,7 @@
   "schema": {
     "message": "string - The Vaidya's conversational response in Hinglish",
     "remedy_provided": "boolean - Whether a home remedy was provided",
-    "product_pitched": "boolean - Whether a product was mentioned/pitched",
-    "conversation_stage": "string enum - greeting|diagnosis|remedy|pitch|objection_handling|closing"
+    "product_pitched": "boolean - Whether SVEDAN was mentioned/pitched",
+    "conversation_stage": "string enum - greeting|diagnosis|remedy|pitch|objection_handling|closing|partner_mode"
   }
 }

@@ -6,7 +6,8 @@
   "schema": {
     "partner_type": "string - The type of partner targeted",
     "city": "string - The target city",
+    "leads": "array of objects with name, professional_type, city, contact_info, verified - Real leads found via web search",
     "channels": "array of objects with channel_name, subject_line, message_body, word_count",
-    "personalization_notes": "string - Notes on how messages were personalized"
+    "personalization_notes": "string - Notes on city-specific and profession-specific personalization"
   }
 }
