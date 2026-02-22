@@ -45,6 +45,9 @@ import { GiHerbsBundle } from 'react-icons/gi'
 const VAIDYA_HEALER_ID = '699b48d0458d38ce831d29de'
 const OUTREACH_GENERATOR_ID = '699b48d0af75b1f63da5ff1d'
 
+const PRODUCT_IMAGE_1 = 'https://asset.lyzr.app/9gDMQX1e'
+const PRODUCT_IMAGE_2 = 'https://asset.lyzr.app/XHwtCVA4'
+
 const PARTNER_TYPES = ['Yoga Teacher', 'Gym Trainer', 'Physiotherapist']
 const CITIES = ['Ludhiana', 'Delhi', 'Mumbai', 'Indore']
 const CHANNELS = ['WhatsApp', 'Email', 'Instagram DM', 'Phone']
@@ -109,23 +112,23 @@ interface ActivityItem {
 const SAMPLE_CHAT_MESSAGES: ChatMessage[] = [
   {
     role: 'user',
-    content: 'Mujhe skin ke liye kuch natural remedy chahiye',
+    content: 'Meri kamar mein bahut dard hai, subah se uth nahi pa raha',
     timestamp: new Date(Date.now() - 300000).toISOString(),
   },
   {
     role: 'assistant',
-    content: 'Namaste! Main aapki skin ki samasya samajhna chahta hoon. Kya aapko dryness hai, acne hai, ya koi aur problem? Ayurveda mein hum pehle aapki prakriti (body constitution) samajhte hain, phir ussi ke hisaab se remedy dete hain. Batayein, aapki skin kaisi hai -- oily, dry, ya combination?',
+    content: 'Namaste! Main Vaidya hoon, aapka apna Ayurvedic health consultant. Kamar dard bahut takleef deta hai, main samajh sakta hoon. Batayein, yeh dard kab se hai? Kya koi specific jagah hai ya poori kamar mein hai? Aur kya jhukne ya uthne mein zyada takleef hoti hai?',
     timestamp: new Date(Date.now() - 280000).toISOString(),
     stage: 'diagnosis',
   },
   {
     role: 'user',
-    content: 'Meri skin bahut dry rehti hai, especially winter mein',
+    content: 'Pichle 3-4 din se hai, lower back mein. Jhukne mein bahut takleef hoti hai.',
     timestamp: new Date(Date.now() - 260000).toISOString(),
   },
   {
     role: 'assistant',
-    content: 'Aapki dry skin se lagta hai aap Vata prakriti ke hain. Ayurveda mein dry skin ke liye kuch behtareen upay hain:\n\n**1. Kumkumadi Tailam** -- Yeh ek premium Ayurvedic face oil hai jo saffron aur 16 herbs se banta hai. Raat ko lagayein.\n\n**2. Aloe Vera + Honey Pack** -- Fresh aloe vera mein ek chammach honey milayein, 20 min lagayein.\n\n**3. Ghee Massage** -- Pure desi ghee se face massage karein, Vata ko balance karta hai.\n\nHumare paas ek special **Kumkumadi Oil** available hai jo clinically tested hai aur 97% users ne 2 hafte mein farak dekha. Kya aap iske baare mein jaanna chahenge?',
+    content: 'Samajh gaya. Lower back pain ke liye main aapko 2-step remedy deta hoon:\n\n**Step 1: Garam Paani ki Sikai** -- Ek towel ko garam paani mein bheego kar, nichod kar lower back pe 10 minute rakhein. Yeh muscles ko relax karega.\n\n**Step 2: Cat-Cow Stretch** -- Haathon aur ghutno ke bal aayein, pehle peeth ko upar karein (cat), phir neeche (cow). Dheere dheere 10 baar karein.\n\nAur agar aap chahein toh ek bahut effective cheez hai -- **SVEDAN Pain Amrut Oil**. Yeh 100% natural Ayurvedic spray hai -- Mahanarayan Oil, Dashmool Oil, Nilgiri aur Pudina se bana hai. Bas spray karein aur halke haathon se massage karein, 15 minute mein relief milega. Chemical-free hai, greasy nahi hai, aur safe hai regular use ke liye.',
     timestamp: new Date(Date.now() - 240000).toISOString(),
     stage: 'remedy',
   },
@@ -138,17 +141,17 @@ const SAMPLE_OUTREACH_RESULT: OutreachResult = {
     {
       channel_name: 'WhatsApp',
       subject_line: '',
-      message_body: 'Namaste! I came across your yoga studio in Delhi and was truly impressed by your holistic approach to wellness. At Vaidya, we create authentic Ayurvedic wellness products that perfectly complement yoga practice. Many yoga teachers across India are already recommending our products to their students for enhanced flexibility and recovery. Would you be open to a brief conversation about a partnership that could benefit your students?',
-      word_count: 65,
+      message_body: 'Namaste! Aapka yoga studio Delhi mein dekha, bahut impressed hue aapke holistic approach se. Hum Shudh Veda Naturals se hain -- humara product SVEDAN Pain Amrut Oil hai jo 100% natural, chemical-free hai aur yoga ke baad muscle recovery mein bahut kaam aata hai. Mahanarayan Oil aur Dashmool Oil se bana hai, spray karo aur massage karo -- 15 min mein relief. Hum Brand Partner model offer karte hain -- 20% commission har sale pe, free samples, aur exclusive city territory. Kya aap interested hain? Hum aapko free samples bhej sakte hain, bas shipping cost lagega! WhatsApp: +918168239200',
+      word_count: 95,
     },
     {
       channel_name: 'Email',
-      subject_line: 'Partnership Opportunity: Ayurvedic Wellness for Your Yoga Students',
-      message_body: 'Dear Yoga Teacher,\n\nI hope this message finds you well. I am reaching out from Vaidya, a trusted name in authentic Ayurvedic wellness products.\n\nWe have been working with yoga instructors across India to bring the ancient wisdom of Ayurveda to modern wellness practices. Our products -- from joint support oils to digestive wellness teas -- are crafted to complement the yogic lifestyle.\n\nWhat we offer partners:\n- Competitive commission structure (15-25%)\n- Free product samples for personal evaluation\n- Co-branded wellness workshops\n- Marketing materials customized for your studio\n\nI would love to schedule a brief call to discuss how we can create value for your students together.\n\nWarm regards,\nVaidya Team',
-      word_count: 120,
+      subject_line: 'Brand Partner Opportunity: SVEDAN Pain Amrut Oil x Your Yoga Studio',
+      message_body: 'Dear Yoga Teacher,\n\nI hope this message finds you well. I am reaching out from Shudh Veda Naturals, makers of SVEDAN Pain Amrut Oil -- a 100% natural, Ayurvedic, chemical-free pain relief spray.\n\nSVEDAN is crafted with Mahanarayan Oil, Dashmool Oil, Til Oil, Gandhpura, Eucalyptus, and Mentha Piperita. It provides fast relief from muscle and joint pain -- perfect for your yoga students post-practice recovery.\n\nOur Brand Partner Program offers:\n- 20% commission on every sale\n- Free product samples for personal use\n- Exclusive city territory rights\n- Marketing materials provided\n- Monthly bonus for top performers\n\nThe product is cruelty-free, fast-absorbing with no greasy residue, and safe for regular use -- values that align perfectly with the yogic lifestyle.\n\nI would love to send you complimentary samples to try. Contact us: +918168239200 (WhatsApp)\n\nWarm regards,\nShudh Veda Naturals Team, Karnal',
+      word_count: 155,
     },
   ],
-  personalization_notes: 'Focus on the synergy between yoga and Ayurveda. Delhi market is competitive so emphasize quality certifications and local testimonials.',
+  personalization_notes: 'Emphasized yoga-Ayurveda synergy. Delhi is a premium market -- highlighted product quality, cruelty-free credentials, and the free sample strategy to lower barrier for first engagement.',
 }
 
 const SAMPLE_PARTNERS: Partner[] = [
@@ -694,7 +697,7 @@ export default function Page() {
           </button>
           <div className="flex items-center gap-2">
             <GiHerbsBundle size={24} className="text-primary" />
-            <span className="text-lg font-bold font-serif">Vaidya AI</span>
+            <span className="text-lg font-bold font-serif">SVEDAN AI</span>
           </div>
           <div className="flex items-center gap-2">
             <Label htmlFor="sample-toggle-mobile" className="text-xs font-sans text-muted-foreground">Sample</Label>
@@ -724,8 +727,8 @@ export default function Page() {
                   <GiHerbsBundle size={22} className="text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold font-serif tracking-tight">Vaidya AI</h1>
-                  <p className="text-[10px] text-muted-foreground font-sans uppercase tracking-widest">Ayurvedic Growth</p>
+                  <h1 className="text-lg font-bold font-serif tracking-tight">SVEDAN AI</h1>
+                  <p className="text-[10px] text-muted-foreground font-sans uppercase tracking-widest">Pain Amrut Oil</p>
                 </div>
               </div>
               <button
@@ -795,8 +798,41 @@ export default function Page() {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-2xl font-bold font-serif">Dashboard</h2>
-                    <p className="text-sm text-muted-foreground font-sans mt-1">Overview of your Ayurvedic sales and growth operations</p>
+                    <p className="text-sm text-muted-foreground font-sans mt-1">SVEDAN Pain Amrut Oil -- Pure Herbs. Fast Relief. Trusted Growth.</p>
                   </div>
+
+                  {/* Product Showcase */}
+                  <Card className="overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+                      <div className="relative h-48 md:h-auto md:col-span-1 bg-gradient-to-br from-[#1a2b4a] to-[#2a3f5f] flex items-center justify-center p-4">
+                        <img
+                          src={PRODUCT_IMAGE_1}
+                          alt="SVEDAN Pain Amrut Oil Product Display"
+                          className="w-full h-full object-contain max-h-48 drop-shadow-xl"
+                        />
+                      </div>
+                      <div className="md:col-span-2 p-6 flex flex-col justify-center">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge className="bg-primary/10 text-primary border-primary/20 font-sans text-xs">By Shudh Veda Naturals</Badge>
+                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 font-sans text-xs">100% Natural</Badge>
+                        </div>
+                        <h3 className="text-xl font-bold font-serif mb-1">SVEDAN Pain Amrut Oil</h3>
+                        <p className="text-sm text-muted-foreground font-sans mb-3">Fast relief and long-lasting comfort from muscle, joint, and nerve pain. Crafted with Care and Made at Home.</p>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {['Mahanarayan Oil', 'Dashmool Oil', 'Til Oil', 'Gandhpura', 'Eucalyptus', 'Pudina'].map(ing => (
+                            <span key={ing} className="text-[10px] font-sans px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground border">{ing}</span>
+                          ))}
+                        </div>
+                        <div className="flex flex-wrap gap-3 text-xs font-sans text-muted-foreground">
+                          <span className="flex items-center gap-1"><FiCheck size={12} className="text-emerald-600" /> Chemical-Free</span>
+                          <span className="flex items-center gap-1"><FiCheck size={12} className="text-emerald-600" /> Cruelty-Free</span>
+                          <span className="flex items-center gap-1"><FiCheck size={12} className="text-emerald-600" /> Fast-Absorbing</span>
+                          <span className="flex items-center gap-1"><FiCheck size={12} className="text-emerald-600" /> No Greasy Residue</span>
+                          <span className="flex items-center gap-1"><FiCheck size={12} className="text-emerald-600" /> Safe for Regular Use</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
 
                   {/* Stats Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -835,7 +871,7 @@ export default function Page() {
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold font-serif">Start Healing Chat</h3>
-                          <p className="text-xs text-muted-foreground font-sans mt-0.5">Engage customers with Ayurvedic wisdom and product recommendations</p>
+                          <p className="text-xs text-muted-foreground font-sans mt-0.5">Engage customers with Ayurvedic remedies and SVEDAN Pain Amrut Oil</p>
                         </div>
                         <FiChevronRight size={20} className="text-muted-foreground group-hover:text-primary transition-colors" />
                       </CardContent>
@@ -847,7 +883,7 @@ export default function Page() {
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold font-serif">Generate Outreach</h3>
-                          <p className="text-xs text-muted-foreground font-sans mt-0.5">Create personalized messages for potential partners across channels</p>
+                          <p className="text-xs text-muted-foreground font-sans mt-0.5">Create personalized SVEDAN Brand Partner outreach across channels</p>
                         </div>
                         <FiChevronRight size={20} className="text-muted-foreground group-hover:text-primary transition-colors" />
                       </CardContent>
@@ -900,7 +936,7 @@ export default function Page() {
                       <div>
                         <h2 className="text-lg font-bold font-serif">Vaidya Healer</h2>
                         <p className="text-xs text-muted-foreground font-sans">
-                          {chatLoading ? 'Preparing remedy...' : 'Ayurvedic wellness consultant'}
+                          {chatLoading ? 'Preparing remedy...' : 'SVEDAN Ayurvedic Pain Relief Consultant'}
                         </p>
                       </div>
                     </div>
@@ -968,20 +1004,25 @@ export default function Page() {
                             <EmptyState
                               icon={<GiHerbsBundle size={28} />}
                               title="Welcome to Vaidya Healer"
-                              description="Share your health concerns and receive personalized Ayurvedic guidance. The Vaidya will diagnose, suggest remedies, and recommend products suited for your needs."
+                              description="Share your pain concerns and receive personalized Ayurvedic guidance. The Vaidya will understand your pain, suggest home remedies, and recommend SVEDAN Pain Amrut Oil for fast natural relief."
                               action={
-                                <div className="flex flex-wrap gap-2 justify-center">
-                                  {['Skin care remedy', 'Digestive health tips', 'Stress management'].map(q => (
-                                    <Button
-                                      key={q}
-                                      variant="outline"
-                                      size="sm"
-                                      className="font-sans text-xs"
-                                      onClick={() => setChatInput(q)}
-                                    >
-                                      {q}
-                                    </Button>
-                                  ))}
+                                <div className="space-y-3">
+                                  <div className="flex justify-center">
+                                    <img src={PRODUCT_IMAGE_2} alt="SVEDAN Pain Amrut Oil" className="h-24 object-contain rounded-lg shadow-md" />
+                                  </div>
+                                  <div className="flex flex-wrap gap-2 justify-center">
+                                    {['Meri kamar mein dard hai', 'Ghutno mein bahut dard hota hai', 'Neck pain se pareshaan hoon', 'Joint pain ka Ayurvedic ilaaj chahiye'].map(q => (
+                                      <Button
+                                        key={q}
+                                        variant="outline"
+                                        size="sm"
+                                        className="font-sans text-xs"
+                                        onClick={() => setChatInput(q)}
+                                      >
+                                        {q}
+                                      </Button>
+                                    ))}
+                                  </div>
                                 </div>
                               }
                             />
@@ -1051,7 +1092,7 @@ export default function Page() {
                           <Textarea
                             value={chatInput}
                             onChange={(e) => setChatInput(e.target.value)}
-                            placeholder="Describe your health concern..."
+                            placeholder="Apna dard batayein... (Describe your pain)"
                             className="flex-1 min-h-[44px] max-h-32 resize-none font-sans text-sm"
                             rows={1}
                             onKeyDown={(e) => {
@@ -1085,7 +1126,7 @@ export default function Page() {
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-2xl font-bold font-serif">Growth Engine</h2>
-                    <p className="text-sm text-muted-foreground font-sans mt-1">Generate personalized outreach messages for potential partners</p>
+                    <p className="text-sm text-muted-foreground font-sans mt-1">Generate personalized SVEDAN Brand Partner outreach for Yoga Teachers, Gym Trainers, and Physiotherapists</p>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -1093,7 +1134,7 @@ export default function Page() {
                     <Card className="lg:col-span-2">
                       <CardHeader>
                         <CardTitle className="text-base font-serif">Outreach Setup</CardTitle>
-                        <CardDescription className="font-sans">Configure your partner outreach parameters</CardDescription>
+                        <CardDescription className="font-sans">Configure SVEDAN Brand Partner outreach parameters</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         {/* Partner Type */}
@@ -1165,6 +1206,15 @@ export default function Page() {
                             onChange={(e) => setGrowthForm(prev => ({ ...prev, partnerName: e.target.value }))}
                             className="font-sans"
                           />
+                        </div>
+
+                        {/* Product Info Card */}
+                        <div className="rounded-lg border bg-secondary/30 p-3 flex items-center gap-3">
+                          <img src={PRODUCT_IMAGE_2} alt="SVEDAN" className="h-12 w-12 rounded object-contain" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-sans font-medium">SVEDAN Pain Amrut Oil</p>
+                            <p className="text-[10px] font-sans text-muted-foreground">20% commission | Free samples | Exclusive territory</p>
+                          </div>
                         </div>
 
                         {outreachError && (
@@ -1302,7 +1352,7 @@ export default function Page() {
                             <EmptyState
                               icon={<RiRocketLine size={28} />}
                               title="Ready to Generate"
-                              description="Configure your outreach parameters on the left and click Generate Outreach to create personalized messages for your target partners."
+                              description="Configure your SVEDAN Brand Partner outreach parameters on the left and click Generate Outreach to create personalized messages with 20% commission offers, free samples, and exclusive territory rights."
                             />
                           </CardContent>
                         </Card>
@@ -1318,7 +1368,7 @@ export default function Page() {
                   <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
                       <h2 className="text-2xl font-bold font-serif">Partner Tracker</h2>
-                      <p className="text-sm text-muted-foreground font-sans mt-1">Manage and track your partner pipeline</p>
+                      <p className="text-sm text-muted-foreground font-sans mt-1">Manage and track your SVEDAN Brand Partner pipeline</p>
                     </div>
                     <Button
                       onClick={() => {
@@ -1392,7 +1442,7 @@ export default function Page() {
                         <EmptyState
                           icon={<HiOutlineUsers size={28} />}
                           title={displayPartners.length === 0 ? 'No Partners Yet' : 'No Partners Match Filters'}
-                          description={displayPartners.length === 0 ? 'Add your first partner to start tracking your pipeline. Use the Growth Engine to generate outreach first.' : 'Try adjusting your search or filter criteria.'}
+                          description={displayPartners.length === 0 ? 'Add your first SVEDAN Brand Partner to start tracking your pipeline. Use the Growth Engine to generate outreach first.' : 'Try adjusting your search or filter criteria.'}
                           action={displayPartners.length === 0 ? (
                             <Button
                               onClick={() => {

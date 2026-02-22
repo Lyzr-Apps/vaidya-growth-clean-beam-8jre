@@ -9,8 +9,8 @@ import { AgentInterceptorProvider } from '@/components/AgentInterceptorProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Vaidya AI',
-  description: 'Ayurvedic Sales and Growth Engine - Powered by AI',
+  title: 'SVEDAN AI - Pain Amrut Oil',
+  description: 'SVEDAN Pain Amrut Oil by Shudh Veda Naturals - Ayurvedic Sales and Growth Engine',
   icons: {
     icon: '/lyzr.png',
   },
