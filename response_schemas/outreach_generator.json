@@ -1,0 +1,12 @@
+{
+  "agent_name": "Outreach Generator Agent",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "schema": {
+    "partner_type": "string - The type of partner targeted",
+    "city": "string - The target city",
+    "channels": "array of objects with channel_name, subject_line, message_body, word_count",
+    "personalization_notes": "string - Notes on how messages were personalized"
+  }
+}

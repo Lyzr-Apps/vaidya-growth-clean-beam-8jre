@@ -1,0 +1,12 @@
+{
+  "agent_name": "Vaidya Healer Agent",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "schema": {
+    "message": "string - The Vaidya's conversational response in Hinglish",
+    "remedy_provided": "boolean - Whether a home remedy was provided",
+    "product_pitched": "boolean - Whether a product was mentioned/pitched",
+    "conversation_stage": "string enum - greeting|diagnosis|remedy|pitch|objection_handling|closing"
+  }
+}

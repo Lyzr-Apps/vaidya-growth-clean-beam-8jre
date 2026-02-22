@@ -1,0 +1,8 @@
+{
+  "agent_name": "Outreach Generator Agent",
+  "agent_id": "699b48d0af75b1f63da5ff1d",
+  "description": "Sharp marketing strategist that generates personalized collaboration messages for local wellness professionals. Takes partner type (Yoga Teacher / Gym Trainer / Physiotherapist), target city, and desired channels as input. Produces tailored WhatsApp messages, email templates, Instagram DM scripts, and phone call talking points \u2014 all promoting the Brand Partner commission model. Content is Hinglish-friendly, professional, and city-aware.",
+  "agent_type": "voice",
+  "accessor": "websocket",
+  "auto_generated": true
+}

@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "User Input",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "vaidya_healer_agent",
+      "type": "Agent",
+      "label": "Vaidya Healer Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "outreach_generator_agent",
+      "type": "Agent",
+      "label": "Outreach Generator Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Agent Response",
+      "nodeCategory": "end"
+    }
+  ],
+  "edges": [
+    {
+      "source": "input_node",
+      "target": "vaidya_healer_agent"
+    },
+    {
+      "source": "input_node",
+      "target": "outreach_generator_agent"
+    },
+    {
+      "source": "vaidya_healer_agent",
+      "target": "output_node"
+    },
+    {
+      "source": "outreach_generator_agent",
+      "target": "output_node"
+    }
+  ],
+  "agents": {
+    "vaidya_healer": {
+      "id": "699b48d0458d38ce831d29de",
+      "name": "Vaidya Healer Agent"
+    },
+    "outreach_generator": {
+      "id": "699b48d0af75b1f63da5ff1d",
+      "name": "Outreach Generator Agent"
+    }
+  }
+}
